@@ -41,7 +41,7 @@ export class ControlsComponent {
             l
               .split(/\s/)
               .filter((i) => i.trim() !== '')
-              .map((i) => parseInt(i))
+              .map((i) => parseFloat(i))
           );
         this.newClusters.emit(lloyds(points, this.k.value));
       }
