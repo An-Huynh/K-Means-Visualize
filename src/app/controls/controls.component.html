@@ -1,0 +1,42 @@
+<div class="controls">
+  <h1>3D K Means Clustering</h1>
+  <form class="controls__form" [formGroup]="form" (submit)="onCalculate()">
+    <label for="data-input">Datapoints</label>
+    <textarea
+      placeholder="11.625&#9;7.837&#9;-2.384&#13;&#10;.837&#9;3.73&#9;-3.01"
+      class="controls__data-input"
+      formControlName="data"
+      id="data-input"
+    ></textarea>
+    <div *ngIf="data?.invalid && (data?.dirty || data?.touched)">
+      <div class="controls__error" *ngIf="data?.errors?.['required']">
+        Datapoints are required.
+      </div>
+      <div class="controls__error" *ngIf="data?.errors?.['pattern']">
+        Data should be formatted so that each row is a single datapoint. Ex.
+        "1.23 -4.56 7.89"
+      </div>
+    </div>
+    <div class="controls__k-input-container">
+      <label for="k-input">K (number of clusters)</label>
+      <input
+        class="controls__k-input"
+        formControlName="k"
+        id="k-input"
+        type="number"
+        step="1"
+      />
+      <div *ngIf="k?.invalid && (k?.dirty || k?.touched)">
+        <div class="controls__error" *ngIf="k?.errors?.['min']">
+          K must be at least 1.
+        </div>
+      </div>
+    </div>
+    <div class="controls__btn-container">
+      <span class="controls__error" *ngIf="clusterError.trim() !== ''">{{
+        clusterError
+      }}</span>
+      <button class="controls__btn">Calculate</button>
+    </div>
+  </form>
+</div>
