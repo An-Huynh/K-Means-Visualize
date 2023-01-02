@@ -4,5 +4,9 @@
       class="app-container__item"
       (newClusters)="onNewClusters($event)"
     ></controls>
+    <cluster-canvas
+      [clusters]="clusters"
+      class="app-container__item"
+    ></cluster-canvas>
   </div>
 </div>

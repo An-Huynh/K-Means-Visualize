@@ -7,7 +7,8 @@ import { Cluster } from 'src/models/Cluster';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  public clusters: Cluster[] = [];
   public onNewClusters(clusters: Cluster[]): void {
-    console.log(JSON.stringify(clusters));
+    this.clusters = clusters;
   }
 }
