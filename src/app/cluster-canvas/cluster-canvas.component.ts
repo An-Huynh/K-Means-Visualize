@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   Input,
   OnChanges,
   SimpleChanges,
@@ -33,6 +34,9 @@ export class ClusterCanvasComponent implements AfterViewInit, OnChanges {
 
   @ViewChild('canvas')
   private canvasRef!: ElementRef;
+
+  @ViewChild('container')
+  private containerRef!: ElementRef;
 
   private camera!: PerspectiveCamera;
   private renderer!: WebGLRenderer;
@@ -68,8 +72,31 @@ export class ClusterCanvasComponent implements AfterViewInit, OnChanges {
     return this.canvasRef.nativeElement;
   }
 
+  private get container(): HTMLDivElement {
+    return this.containerRef.nativeElement;
+  }
+
   private getAspectRatio(): number {
     return this.canvas.clientWidth / this.canvas.clientHeight;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private onResize(event: Event): void {
+    const target = event.target as Window;
+
+    // Weird fix. Canvas won't shrink if the page shrink so you need to
+    // manually change the size really small and then correct it to the
+    // correct size after.
+    this.canvas.style.height = `1px`;
+    this.canvas.style.width = `1px`;
+
+    this.canvas.style.height = `${this.container.clientHeight}px`;
+    this.canvas.style.width = `${this.container.clientWidth}px`;
+
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight, false);
+    this.camera.aspect = this.getAspectRatio();
+    this.camera.updateProjectionMatrix();
+    this.renderer.render(this.scene, this.camera);
   }
 
   private setupSceneAndCamera(): void {
